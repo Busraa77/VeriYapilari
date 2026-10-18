@@ -1,0 +1,188 @@
+
+public class Eleman{
+    int icerik;
+    Eleman ileri;
+    public Eleman(int icerik){
+        this.icerik=icerik;
+        ileri=null;
+    }
+}
+
+public class Liste{
+    Eleman bas;
+    Eleman son;
+    public Liste(){
+        bas=null;
+        son=null;
+    }
+
+    void listeBasinaEkle(Eleman yeni){
+        if(son==null){
+            son=yeni;
+            bas=yeni;
+        }
+        else{
+            yeni.ileri=bas;
+            bas=yeni;
+        }
+    }
+
+    void listeyeEkle(Eleman yeni){
+        if(bas==null)
+            bas=yeni;
+        else
+            son.ileri=yeni;
+        son=yeni;
+    }
+
+    void listeninOrtasinaEkle(Eleman yeni){
+        if(bas==null){
+            bas=yeni;
+            son=yeni;
+            return;
+        }
+
+        Eleman gecici=bas;
+        int sayac=0;
+
+        while(gecici!=null)
+        {
+            gecici=gecici.ileri;
+            sayac++;
+        }
+
+        //Ortadaki elemana kadar ilerle
+        gecici=bas;
+        for(int i=1; i<sayac/2; i++)
+        {
+            gecici=gecici.ileri;
+        }
+          // Yeni elemanı araya ekle
+         yeni.ileri = gecici.ileri;
+         gecici.ileri = yeni;
+
+        if (yeni.ileri == null) {
+            son = yeni;
+        }
+    }
+
+    void listeBasiSil(){
+        if(bas==null)
+            return;
+        else{
+            bas=bas.ileri;
+
+        }
+    }
+
+    void listeSonuSil(){
+        Eleman gecici = bas;
+        Eleman once=null;
+
+        while(gecici!=null)
+        {
+            once=gecici;
+        gecici=gecici.ileri;
+
+        }
+        if(once==null){
+            bas=null;
+        }
+        else{
+            son=once;
+            once.ileri=null;
+        }
+    }
+
+    void listedenSil(Eleman s){
+        Eleman gecici = bas;
+        Eleman once=null;
+
+        while(gecici!=s){
+            once=gecici;
+            gecici=gecici.ileri;
+
+        }
+        once.ileri=s.ileri;
+    }
+
+    int elemanSayisi(){
+        int sayac=0;
+        Eleman gecici=bas;
+
+        while(gecici!=null){
+            gecici=gecici.ileri;
+            sayac++; 
+        }
+        return sayac;
+    }
+
+    Liste listeBirlestir(Liste l1, Liste l2){
+        Liste gecici=new Liste();
+        if(l1.bas==null){
+            return l2;
+        }
+        if(l2.bas==null){
+            return l1;
+        }
+        gecici.bas=l1.bas;
+        gecici.son=l2.son;
+        l1.son.ileri=l2.bas;
+        return gecici;
+    }
+
+    Eleman tersCevir(Eleman eleman){
+        Eleman once=null;
+        Eleman mevcut=eleman;
+        Eleman sonra=null;
+
+        while(mevcut!=null){
+            sonra=mevcut.sonra;//Mevcut elemanın bir sonrakini kaydediyoruz.
+            mevcut.sonra=once;//sonra bağlantısını once değerine yönlendiriyoruz.
+            once=mevcut;//once değişkenini mevcut elemana ilerletiyoruz
+            mevcut=sonra;//Bir sonraki elemana geçiyoruz
+        }
+        eleman=once;
+        return eleman;
+    }
+
+    //RECURSİVE YAZDIRMA
+    void yazdir(Eleman eleman) {
+    if (eleman == null) {
+        return;
+    }
+
+    System.out.println(eleman.icerik);
+    yazdir(eleman.ileri);
+    }
+
+    //SIRALI EKLEME
+    void siraliEkle(Eleman yeni) {
+    if (bas == null) {
+        bas = yeni;
+        son = yeni;
+        return;
+    }
+
+    if (yeni.icerik < bas.icerik) {
+        yeni.ileri = bas;
+        bas = yeni;
+        return;
+    }
+
+    Eleman gecici = bas;
+
+    while (gecici.ileri != null &&
+           gecici.ileri.icerik < yeni.icerik) {
+        gecici = gecici.ileri;
+    }
+
+    yeni.ileri = gecici.ileri;
+    gecici.ileri = yeni;
+
+    if (yeni.ileri == null) {
+        son = yeni;
+    }
+}
+
+}
