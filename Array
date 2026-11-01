@@ -1,0 +1,129 @@
+
+public class Dizi{
+    int boyut;
+    String [] elemanlar;
+    int indis;
+
+    public Dizi(int boyut){
+        this.boyut= boyut;
+        this.elemanlar = new String[boyut];
+        this.indis=0;
+    }
+
+    public void ekle(String kelime){
+        if(this.indis<this.boyut){
+            this.elemanlar[this.indis]=kelime;
+            this.indis++;
+        }
+        else{
+            System.out.println("Dizi dolu");
+        }
+    }
+
+    public void arama(String aranan){
+        for(int index=0; index<this.indis; index++){
+            if(elemanlar[index].equals(aranan)){
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    public void sil(String kelime){
+        int i = arama(kelime);
+        if(i != -1){
+            while(i<this.indis-1){
+                this.elemanlar[i]=this.elemanlar[i+1];
+                i++;
+            }
+            this.indis--;
+        }
+        else{
+            System.out.println("Silinecek veri bulunamadı.");
+        }
+    }
+
+    public void guncelle(String silinecek, String kelime){
+        int i= arama(silinecek);
+        if(i!=-1)
+        {
+            this.elemanlar[i]=kelime;
+        }
+        else{
+            System.out.println("Güncellenecek kelime bulunamadı.");
+        }
+
+    }
+
+    public void yazdir(){
+        i = this.indis;
+        if(i<=0){
+            System.out.println("Dizi boş");
+        }
+        else{
+            for(int index=0; index<i; index++){
+                System.out.println(elemanlar[i]+ " ");
+            }
+            System.out.println("]");
+        }
+    }
+}
+
+
+public static void main(String[] args){
+    Dizi dizi = new Dizi(6);
+    Scanner klavye = new Scanner(System.in);
+
+    int secim=0;
+    do{
+        System.out.println("********MENU********");
+        System.out.println("1-Ekle");
+        System.out.println("2-Sil");
+        System.out.println("3-Ara");
+        System.out.println("4-Güncelle");
+        System.out.println("5-Yazdır");
+        System.out.println("0-Çıkış");
+
+        secim=klavye.nextInt();
+        String kelime;
+
+        switch(secim){
+            case 1:
+                System.out.println("Eklenecek kelimeyi giriniz.");
+                kelime=klavye.nextLine();
+                dizi.ekle(kelime);
+                break;
+            
+            case 2: 
+                System.out.println("Silinecek kelimeyi giriniz.");
+                kelime=klavye.nextLine();
+                dizi.sil(kelime);
+                break;
+            
+            case 3:
+                System.out.println("Aranacak kelimeyi giriniz.");
+                kelime= klavye.nextLine();
+                dizi.arama(kelime);
+                break;
+            
+            case 4:
+                System.out.println("Güncellenecek kelimeyi giriniz.");
+                kelime=klavye.nextLine();
+                System.out.println("Değiştirilecek kelimeyi seçiniz.");
+                degistir = klavye.nextLine();
+                dizi.guncelle(degistir,kelime);
+                break;
+            
+            case 5:
+                System.out.println("Dizi elemanları: " + " ");
+                dizi.yazdir();
+                break;
+
+            case 0:
+                System.out.println("Çıkış yapılıyor.");
+                secim=8;
+                break;
+        }
+    }
+    while(secim!=8);
+}
